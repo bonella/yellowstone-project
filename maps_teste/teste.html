@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapa com OpenStreetMap e Leaflet</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([-26.916, -49.071], 10); // Criar mapa
+
+        // Adicionar camada de OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // URL do arquivo JSON
+        var url = 'geojs-42-mun.json';
+
+        // Função para carregar o arquivo JSON
+        function loadJSON(callback) {
+            fetch(url)
+            .then(response => response.json())
+            .then(data => callback(data))
+            .catch(error => console.error('Erro ao carregar o JSON:', error));
+        }
+
+        // Função para encontrar as coordenadas de Xanxerê
+        function findXanxereCoordinates(geojson) {
+            for (var i = 0; i < geojson.features.length; i++) {
+                var feature = geojson.features[i];
+                if (feature.properties.name === "Xanxerê") {
+                    console.log("Coordenadas de Xanxerê encontradas:", feature.geometry.coordinates[0]);
+                    return feature.geometry.coordinates[0]; // Retorna as coordenadas do polígono
+                }
+            }
+            console.log("Coordenadas de Xanxerê não encontradas.");
+            return null; // Retorna null se Xanxerê não for encontrada
+        }
+
+        // Função para desenhar o polígono de Xanxerê no mapa
+        function drawXanxerePolygon(geojson) {
+            // Encontrar as coordenadas de Xanxerê
+            var xanxereCoordinates = findXanxereCoordinates(geojson);
+            if (xanxereCoordinates) {
+                // Usar as coordenadas para definir o polígono em Leaflet e adicionar ao mapa
+                console.log("Desenhando polígono de Xanxerê:", xanxereCoordinates);
+                L.polygon(xanxereCoordinates, {color: 'red'}).addTo(map);
+            }
+        }
+
+        // Carregar o JSON e desenhar o polígono de Xanxerê quando estiver disponível
+        loadJSON(drawXanxerePolygon);
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapa com OpenStreetMap e Leaflet</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+      // Inicializa o mapa e define a posição inicial e o nível de zoom
+      var map = L.map('map').setView([-26.685795, -52.308896], 13);
+  
+      // Adiciona um tile layer do OpenStreetMap
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+  
+      // Adiciona um marcador
+      var marker = L.marker([-26.685795, -52.308896]).addTo(map);
+  
+      // Adiciona um popup ao marcador
+      marker.bindPopup("<b>Olá mundo!</b><br>Eu sou um popup.").openPopup();
+  
+      // Adiciona um círculo
+      var circle = L.circle([-26.685795, -52.308896], {
+          color: 'red',
+          fillColor: '#f03',
+          fillOpacity: 0.5,
+          radius: 500
+      }).addTo(map);
+  
+      // Adiciona um polígono
+    //   var polygon = L.polygon([
+    //       [-26.685795, -52.308896],
+    //       [51.503, -0.06],
+    //       [51.51, -0.047]
+    //   ]).addTo(map);
+  
+      //   Adiciona um polígono
+      var polygon = L.polygon([[-52.2623145481, -26.6657624056], [-52.2542572824, -26.6753966310], [-52.2318702800, -26.6806463063], [-52.2179155079, -26.6744050808], [-52.2173024797, -26.6675013072], [-52.2088566245, -26.6650988448], [-52.1977652633, -26.6641457102], [-52.1863359022, -26.6695195077], [-52.1803056940, -26.6775628022], [-52.1803454204, -26.6815152213], [-52.1858290860, -26.6845916853], [-52.1860456197, -26.6972504939], [-52.1790821052, -26.7004329835], [-52.1853634377, -26.7133426311], [-52.1904456884, -26.7298232340], [-52.2104745121, -26.7418986945], [-52.2057806777, -26.7632789543], [-52.2135536241, -26.7690378977], [-52.2214371659, -26.7671673780], [-52.2269116251, -26.7775046372], [-52.2303298981, -26.7732805402], [-52.2259392707, -26.7690887699], [-52.2291640528, -26.7611169548], [-52.2336626733, -26.7597465781], [-52.2535303898, -26.7636513957], [-52.2572325898, -26.7618111942], [-52.2566605296, -26.7545615922], [-52.2625637516, -26.7522231494], [-52.2657132049, -26.7537775260], [-52.2656391131, -26.7602459584], [-52.2781094686, -26.7588135331], [-52.2731420889, -26.7699432039], [-52.2761268680, -26.7740524235], [-52.2813218617, -26.7744466459], [-52.2904227484, -26.7691267595], [-52.2924661151, -26.7637421867], [-52.2992202392, -26.7633929773], [-52.3049072501, -26.7638048550], [-52.3039831674, -26.7728762373], [-52.3086656731, -26.7796939371], [-52.3181922257, -26.7732711102], [-52.3148405123, -26.7544744613], [-52.3292568503, -26.7560093088], [-52.3354483541, -26.7619371321], [-52.3432509821, -26.7579104219], [-52.3487460846, -26.7558694480], [-52.3536663670, -26.7620262241], [-52.3619063848, -26.7592144367], [-52.3692194316, -26.7505959753], [-52.3675704805, -26.7419491341], [-52.3529404502, -26.7237266901], [-52.3641547353, -26.7133291335], [-52.3593346905, -26.7060252517], [-52.3680805839, -26.6717794170], [-52.3683964761, -26.6670197104], [-52.3560366174, -26.6598518664], [-52.3496611516, -26.6653939935], [-52.3375339399, -26.6666620787], [-52.3273033900, -26.6613763442], [-52.3097246908, -26.6545058129], [-52.2808395845, -26.6432092328], [-52.2623145481, -26.6657624056]
+      ]).addTo(map);
+
+      // Popups ao clicar em objetos
+      marker.bindPopup("Eu sou um marcador.");
+      circle.bindPopup("Eu sou um círculo.");
+      polygon.bindPopup("Eu sou um polígono.");
+  
+      // Evento de clique no mapa
+      map.on('click', function(e) {
+          alert("Você clicou no mapa em " + e.latlng.toString());
+      });
+  </script>  
+<!-- 
+  <script>
+    // Coordenadas de São Paulo, Brasil
+    var cityCoordinates = [-23.5505, -46.6333];
+
+    // Inicializa o mapa e centraliza em São Paulo
+    var map = L.map('map').setView(cityCoordinates, 13);
+
+    // Adiciona um tile layer do OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Adiciona um marcador em São Paulo
+    var marker = L.marker(cityCoordinates).addTo(map);
+
+    // Adiciona um popup ao marcador
+    marker.bindPopup("<b>São Paulo</b><br>Capital de São Paulo.").openPopup();
+  </script> -->
+
+  <!-- <script>
+    // Coordenadas aproximadas dos limites da cidade de São Paulo
+    var saoPauloBounds = [
+
+  ];
+
+    // Inicializa o mapa e centraliza em São Paulo
+    var map = L.map('map').setView([-26.685795, -52.308896], 12);
+
+    // Adiciona um tile layer do OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Adiciona um polígono ao redor de São Paulo
+    var polygon = L.polygon(saoPauloBounds, {
+        color: 'blue',
+        weight: 3,
+        fillColor: '#f03',
+        fillOpacity: 0.2
+    }).addTo(map);
+
+    // Adiciona um popup ao polígono
+    polygon.bindPopup("<b>São Paulo</b><br>Limites aproximados da cidade.");
+  </script> -->
+
+</body>
+</html>

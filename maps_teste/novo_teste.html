@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapa com OpenStreetMap e Leaflet</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        // Inicializar o mapa
+        var map = L.map('map').setView([-27.6343316862, -51.0804582553], 10); // Centralize o mapa em uma coordenada inicial
+
+        // Adicionar camada de mapa base do OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // URL do arquivo JSON
+        var url = 'geojs-42-mun.json'; // Substitua pelo caminho real do seu arquivo JSON
+
+        // Função para carregar o arquivo JSON
+        function loadJSON(callback) {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => callback(data))
+                .catch(error => console.error('Erro ao carregar o JSON:', error));
+        }
+
+        // Função para encontrar as coordenadas de uma cidade
+        function findCityCoordinates(geojson, cityName) {
+            for (var i = 0; i < geojson.features.length; i++) {
+                var feature = geojson.features[i];
+                if (feature.properties.name === cityName) {
+                    return feature.geometry.coordinates[0]; // Retorna as coordenadas do polígono
+                }
+            }
+            return null; // Retorna null se a cidade não for encontrada
+        }
+
+        // Função para desenhar o polígono de uma cidade no mapa
+        function drawCityPolygon(geojson, cityName) {
+            // Encontrar as coordenadas da cidade
+            var cityCoordinates = findCityCoordinates(geojson, cityName);
+            if (cityCoordinates) {
+                console.log("Coordenadas do polígono de " + cityName + ":", cityCoordinates);
+
+                // Transformar as coordenadas no formato esperado pelo Leaflet (invertendo lat e lng)
+                var latlngs = cityCoordinates.map(function(coord) {
+                    return [coord[1], coord[0]]; // Inverter a ordem para [lat, lng]
+                });
+
+                // Usar as coordenadas para definir o polígono em Leaflet
+                var polygon = L.polygon(latlngs, {color: 'red'});
+                console.log("Polígono de " + cityName + " criado:", polygon);
+
+                // Adicionar o polígono ao mapa
+                polygon.addTo(map);
+                console.log("Polígono de " + cityName + " adicionado ao mapa:", polygon);
+
+                // Centralizar o mapa no polígono
+                map.fitBounds(polygon.getBounds());
+            } else {
+                console.log("Coordenadas de " + cityName + " não encontradas.");
+            }
+        }
+
+        // Carregar o JSON e desenhar o polígono da cidade quando estiver disponível
+        loadJSON(function(data) {
+            drawCityPolygon(data, "Ouro Verde"); // Substitua "Xanxerê" pelo nome da cidade que você deseja desenhar
+        });
+    </script>
+</body>
+</html>

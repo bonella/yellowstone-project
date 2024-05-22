@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Desenho de Polígonos com Leaflet</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+    <script>
+        // Traduções para o Leaflet Draw
+        L.drawLocal = {
+            draw: {
+                toolbar: {
+                    actions: {
+                        title: 'Cancelar desenho',
+                        text: 'Cancelar'
+                    },
+                    finish: {
+                        title: 'Finalizar desenho',
+                        text: 'Finalizar'
+                    },
+                    undo: {
+                        title: 'Apagar o último ponto desenhado',
+                        text: 'Apagar último ponto'
+                    },
+                    buttons: {
+                        polyline: 'Desenhar uma linha',
+                        polygon: 'Desenhar um polígono',
+                        rectangle: 'Desenhar um retângulo',
+                        circle: 'Desenhar um círculo',
+                        marker: 'Desenhar um marcador',
+                        circlemarker: 'Desenhar um marcador de círculo'
+                    }
+                },
+                handlers: {
+                    polygon: {
+                        tooltip: {
+                            start: 'Clique para começar a desenhar a forma.',
+                            cont: 'Clique para continuar desenhando a forma.',
+                            end: 'Clique no primeiro ponto para fechar esta forma.'
+                        }
+                    },
+                    polyline: {
+                        error: '<strong>Erro:</strong> as bordas da forma não podem cruzar!',
+                        tooltip: {
+                            start: 'Clique para começar a desenhar a linha.',
+                            cont: 'Clique para continuar desenhando a linha.',
+                            end: 'Clique no último ponto para finalizar a linha.'
+                        }
+                    },
+                    rectangle: {
+                        tooltip: {
+                            start: 'Clique e arraste para desenhar o retângulo.'
+                        }
+                    },
+                    circle: {
+                        tooltip: {
+                            start: 'Clique e arraste para desenhar o círculo.'
+                        }
+                    },
+                    marker: {
+                        tooltip: {
+                            start: 'Clique no mapa para posicionar o marcador.'
+                        }
+                    },
+                    circlemarker: {
+                        tooltip: {
+                            start: 'Clique no mapa para posicionar o marcador de círculo.'
+                        }
+                    }
+                }
+            },
+            edit: {
+                toolbar: {
+                    actions: {
+                        save: {
+                            title: 'Salvar alterações',
+                            text: 'Salvar'
+                        },
+                        cancel: {
+                            title: 'Cancelar edições, descartar todas as alterações',
+                            text: 'Cancelar'
+                        },
+                        clearAll: {
+                            title: 'Limpar todas as camadas',
+                            text: 'Limpar tudo'
+                        }
+                    },
+                    buttons: {
+                        edit: 'Editar camadas',
+                        editDisabled: 'Nenhuma camada para editar',
+                        remove: 'Apagar camadas',
+                        removeDisabled: 'Nenhuma camada para apagar'
+                    }
+                },
+                handlers: {
+                    edit: {
+                        tooltip: {
+                            text: 'Arraste os marcadores ou vértices para editar a forma.',
+                            subtext: 'Clique em cancelar para desfazer as alterações.'
+                        }
+                    },
+                    remove: {
+                        tooltip: {
+                            text: 'Clique em uma forma para removê-la.'
+                        }
+                    }
+                }
+            }
+        };
+
+        // Inicializar o mapa
+        var map = L.map('map').setView([-27.6343316862, -51.0804582553], 10); // Coordenadas iniciais
+
+        // Adicionar camada de mapa base do OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Configurar ferramentas de desenho
+        var drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+
+        var drawControl = new L.Control.Draw({
+            edit: {
+                featureGroup: drawnItems
+            },
+            draw: {
+                polygon: true,
+                polyline: false,
+                rectangle: false,
+                circle: false,
+                marker: false,
+                circlemarker: false
+            }
+        });
+        map.addControl(drawControl);
+
+        // Carregar polígonos salvos do localStorage
+        function loadSavedPolygons() {
+            var savedPolygons = JSON.parse(localStorage.getItem('polygons'));
+            if (savedPolygons) {
+                savedPolygons.forEach(function(polygon) {
+                    var latlngs = polygon.map(function(coord) {
+                        return [coord[0], coord[1]];
+                    });
+                    L.polygon(latlngs, {color: 'red'}).addTo(drawnItems);
+                });
+            }
+        }
+
+        // Salvar coordenadas dos polígonos no localStorage
+        function savePolygonCoordinates(coordArray) {
+            var savedPolygons = JSON.parse(localStorage.getItem('polygons')) || [];
+            savedPolygons.push(coordArray);
+            localStorage.setItem('polygons', JSON.stringify(savedPolygons));
+        }
+
+        // Evento disparado ao criar um novo polígono
+        map.on(L.Draw.Event.CREATED, function (event) {
+            var layer = event.layer;
+            drawnItems.addLayer(layer);
+
+            // Obter as coordenadas do polígono
+            var coordinates = layer.getLatLngs()[0];
+            var coordArray = coordinates.map(function(coord) {
+                return [coord.lat, coord.lng];
+            });
+
+            // Salvar coordenadas no localStorage
+            savePolygonCoordinates(coordArray);
+        });
+
+        // Carregar polígonos salvos ao iniciar a página
+        loadSavedPolygons();
+    </script>
+</body>
+</html>
