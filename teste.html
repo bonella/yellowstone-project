@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Produção de Leite</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+    <style>
+        #map { height: 400px; }
+    </style>
+</head>
+<body>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Produção de Leite</h1>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4>Tabela com a produção de leite por vaca por mês. Com a opção de editar e excluir (na linha).</h4>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-map me-1"></i>
+                Localização dos animais em tempo real
+                <a href="" onclick="clearPolygons()"><i class="fas fa-remove"></i></a>
+            </div>
+            <div class="card-body">
+                <div id="map"></div>
+                <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+                <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+                <script>
+                    // Inicializar o mapa
+                    var map = L.map('map').setView([-26.693478, -52.306767], 15); // Coordenadas iniciais
+
+                    // Adicionar camada de mapa base do OpenStreetMap
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+
+                    // Adiciona um marcador inicial
+                    var marker = L.marker([-26.685795, -52.308896]).addTo(map);
+                    marker.bindPopup("Vaca 1");
+
+                    // Configurar ferramentas de desenho
+                    var drawnItems = new L.FeatureGroup();
+                    map.addLayer(drawnItems);
+
+                    var drawControl = new L.Control.Draw({
+                        edit: {
+                            featureGroup: drawnItems,
+                            edit: true, // Permitir edição
+                            remove: true // Permitir remoção
+                        },
+                        draw: {
+                            polygon: true,
+                            polyline: false,
+                            rectangle: false,
+                            circle: false,
+                            marker: false,
+                            circlemarker: false
+                        }
+                    });
+                    map.addControl(drawControl);
+
+                    // Carregar polígonos salvos do localStorage
+                    function loadSavedPolygons() {
+                        var savedPolygons = JSON.parse(localStorage.getItem('polygons'));
+                        if (savedPolygons) {
+                            savedPolygons.forEach(function(polygon) {
+                                var latlngs = polygon.map(function(coord) {
+                                    return [coord[0], coord[1]];
+                                });
+                                L.polygon(latlngs, {color: 'red'}).addTo(drawnItems).on('click', onPolygonClick);
+                            });
+
+                        }
+                    }
+
+                    // Salvar coordenadas dos polígonos no localStorage
+                    function savePolygonCoordinates(coordArray) {
+                        var savedPolygons = JSON.parse(localStorage.getItem('polygons')) || [];
+                        savedPolygons.push(coordArray);
+                        localStorage.setItem('polygons', JSON.stringify(savedPolygons));
+                    }
+
+                    // Evento disparado ao criar ou editar um polígono
+                    map.on(L.Draw.Event.CREATED, function (event) {
+                        var layer = event.layer;
+                        drawnItems.addLayer(layer);
+
+                        // Obter as coordenadas do polígono
+                        var coordinates = layer.getLatLngs()[0];
+                        var coordArray = coordinates.map(function(coord) {
+                            return [coord.lat, coord.lng];
+                        });
+
+                        // Salvar coordenadas no localStorage
+                        savePolygonCoordinates(coordArray);
+
+                        // Adicionar manipulador de evento de clique ao polígono
+                        layer.on('click', onPolygonClick);
+                    });
+
+                    map.on(L.Draw.Event.EDITED, function(event) {
+                        var layers = event.layers;
+                        layers.eachLayer(function(layer) {
+                            var coordinates = layer.getLatLngs()[0];
+                            var coordArray = coordinates.map(function(coord) {
+                                return [coord.lat, coord.lng];
+                            });
+
+                            // Salvar coordenadas atualizadas no localStorage
+                            savePolygonCoordinates(coordArray);
+                        });
+                    });
+
+                    // Manipulador de evento de clique de polígono
+                    function onPolygonClick(event) {
+                        var layer = event.target;
+                        drawnItems.eachLayer(function(l) {
+                            if (l === layer) {
+                                // Iniciar modo de edição para o polígono clicado
+                                map.editTools.startPolygonEdit(l);
+                            } else {
+                                // Finalizar qualquer outra edição em progresso
+                                map.editTools.stopDrawing();
+                            }
+                        });
+                    }
+
+                    // Função para limpar o localStorage e remover polígonos do mapa
+                    function clearPolygons() {
+                        localStorage.removeItem('polygons');
+                        drawnItems.clearLayers();
+                    }
+
+                    // Carregar polígonos salvos ao iniciar a página
+                    loadSavedPolygons();
+                </script>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+</body>
+<script>
+    window.addEventListener('DOMContentLoaded', event => {
+        const datatablesSimple = document.getElementById('datatablesSimple');
+        if (datatablesSimple) {
+            new simpleDatatables.DataTable(datatablesSimple);
+        }
+    });
+</script>
+
+<script>
+    // Definir coordenadas iniciais do marcador dentro do polígono
+    var initialPosition = L.latLng(-26.685795, -52.308896);
+
+    // Adicionar o marcador ao mapa
+    var movingMarker = L.marker(initialPosition).addTo(map);
+
+    // Array de coordenadas para simular o movimento
+    var moveCoordinates = [
+        L.latLng(-26.685795, -52.308896),
+        L.latLng(-26.687795, -52.309896),
+        L.latLng(-26.688795, -52.307896),
+        // Adicione mais coordenadas conforme necessário
+    ];
+
+    // Índice inicial no array de coordenadas
+    var currentIndex = 0;
+
+    // Função para atualizar a posição do marcador
+    function moveMarker() {
+        movingMarker.setLatLng(moveCoordinates[currentIndex]);
+        currentIndex++;
+        if (currentIndex >= moveCoordinates.length) {
+            currentIndex = 0; // Reiniciar o loop
+        }
+    }
+
+    // Definir intervalo para atualizar a posição do marcador (em milissegundos)
+    var interval = 2000; // 2 segundos
+
+    // Iniciar o movimento do marcador
+    var moveInterval = setInterval(moveMarker, interval);
+
+    // Parar o movimento quando a página for fechada
+    window.addEventListener('beforeunload', function() {
+        clearInterval(moveInterval);
+    });
+</script>
+
+</html>
+

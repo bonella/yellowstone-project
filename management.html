@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Gerenciar Manejo</title>
+        <link href="css/styles.css" rel="stylesheet" />
+        
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+        <!-- Maps -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.label/dist/leaflet.label.css" />
+        <style>
+            #map {
+                height: 600px;
+                width: 100%;
+            }
+        </style>
+        </script>
+        <!-- Favicon -->
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon/favicon-16x16.png">
+        <link rel="manifest" href="assets/img/favicon/site.webmanifest">
+
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="index.html">YellowStone</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <!-- <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button> -->
+                </div>
+            </form>
+            <!-- Navbar-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Configurações</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <!-- <div class="sb-sidenav-menu-heading">Indicadores</div> -->
+                            <a class="nav-link" href="index.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Painel
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Gerenciar Fazenda</div>
+
+                            <!-- <div class="sb-sidenav-menu-heading">Interface</div> -->
+                            <a class="nav-link collapsed" href="management.html" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-cow"></i></div>
+                                Manejo
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="management.html">Detalhes</a>
+                                    <a class="nav-link" href="#">Cadastrar animais</a>
+                                   <!-- <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a> -->
+                                </nav>
+                            </div>
+                            <a class="nav-link" href="harvest.html">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-seedling"></i></div>
+                                Safra
+                                <!-- <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div> -->
+                            </a>
+                            <a class="nav-link" href="farm.html">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-tractor"></i></div>
+                                Fazenda
+                                <!-- <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div> -->
+                            </a>
+                            <!-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                Páginas
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
+                                        Authentication
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="login.html">Login</a>
+                                            <a class="nav-link" href="register.html">Register</a>
+                                            <a class="nav-link" href="password.html">Forgot Password</a>
+                                        </nav>
+                                    </div>
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
+                                        Error
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="401.html">401 Page</a>
+                                            <a class="nav-link" href="404.html">404 Page</a>
+                                            <a class="nav-link" href="500.html">500 Page</a>
+                                        </nav>
+                                    </div>
+                                </nav>
+                            </div> -->
+                            <div class="sb-sidenav-menu-heading">Sensores</div>
+                            <a class="nav-link" href="charts.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                Charts
+                            </a>
+                            <a class="nav-link" href="tables.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Tables
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logado com:</div>
+                        USUARIO
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Gerenciar Manejo</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Gerenciar Manejo</li>
+                        </ol>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p class="mb-0">
+                                    Aqui você pode gerenciar e acompanhar os indicadores do seu gado de leite. Poderá realizar o cadastro de novos animais, 
+                                    vincular a sensores IOT pré-cadastrados ao sistema. Abaixo, segue os animais cadastrados.
+                                </p>
+                            </div>
+                        </div>
+                                                
+                        <!-- MAPA DE LOCALIZAÇÃO DOS ANIMAIS -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-map me-1"></i>
+                                Localização dos animais em tempo real
+                                <a href="" onclick="clearPolygons()"><i class="fas fa-remove"></i></a>
+                            </div>
+                            <div class="card-body">
+                                <div id="map"></div>
+                                <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+                                <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+                                <script>
+                                    // Inicializar o mapa
+                                    var map = L.map('map').setView([-26.693478, -52.306767], 15); // Coordenadas iniciais
+                            
+                                    // Adicionar camada de mapa base do OpenStreetMap
+                                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                    }).addTo(map);
+                            
+
+                                    // Adiciona um marcador
+                                    var marker = L.marker([-26.685795, -52.308896]).addTo(map);
+                                    // Popups ao clicar em objetos
+                                    marker.bindPopup("Vaca 1");
+
+
+                                    // Configurar ferramentas de desenho
+                                    var drawnItems = new L.FeatureGroup();
+                                    map.addLayer(drawnItems);
+                            
+                                    var drawControl = new L.Control.Draw({
+                                        edit: {
+                                            featureGroup: drawnItems,
+                                            edit: true, // Permitir edição
+                                            remove: true // Permitir remoção
+                                        },
+                                        draw: {
+                                            polygon: true,
+                                            polyline: false,
+                                            rectangle: false,
+                                            circle: false,
+                                            marker: false,
+                                            circlemarker: false
+                                        }
+                                    });
+                                    map.addControl(drawControl);
+                            
+                                    // Carregar polígonos salvos do localStorage
+                                    function loadSavedPolygons() {
+                                        var savedPolygons = JSON.parse(localStorage.getItem('polygons'));
+                                        if (savedPolygons) {
+                                            savedPolygons.forEach(function(polygon) {
+                                                var latlngs = polygon.map(function(coord) {
+                                                    return [coord[0], coord[1]];
+                                                });
+                                                L.polygon(latlngs, {color: 'red'}).addTo(drawnItems).on('click', onPolygonClick);
+                                            });
+                                            
+                                        }
+                                    }
+                            
+                                    // Salvar coordenadas dos polígonos no localStorage
+                                    function savePolygonCoordinates(coordArray) {
+                                        var savedPolygons = JSON.parse(localStorage.getItem('polygons')) || [];
+                                        savedPolygons.push(coordArray);
+                                        localStorage.setItem('polygons', JSON.stringify(savedPolygons));
+                                    }
+                            
+                                    // Evento disparado ao criar ou editar um polígono
+                                    map.on(L.Draw.Event.CREATED, function (event) {
+                                        var layer = event.layer;
+                                        drawnItems.addLayer(layer);
+                            
+                                        // Obter as coordenadas do polígono
+                                        var coordinates = layer.getLatLngs()[0];
+                                        var coordArray = coordinates.map(function(coord) {
+                                            console.log(coordArray)
+                                            console.log(coordinates)
+                                            return [coord.lat, coord.lng];
+                                        });
+                            
+                                        // Salvar coordenadas no localStorage
+                                        savePolygonCoordinates(coordArray);
+                            
+                                        // Adicionar manipulador de evento de clique ao polígono
+                                        layer.on('click', onPolygonClick);
+                                    });
+                            
+                                    map.on(L.Draw.Event.EDITED, function(event) {
+                                        var layers = event.layers;
+                                        layers.eachLayer(function(layer) {
+                                            var coordinates = layer.getLatLngs()[0];
+                                            var coordArray = coordinates.map(function(coord) {
+                                                return [coord.lat, coord.lng];
+                                            });
+                            
+                                            // Salvar coordenadas atualizadas no localStorage
+                                            savePolygonCoordinates(coordArray);
+                                        });
+                                    });
+                            
+                                    // Manipulador de evento de clique de polígono
+                                    function onPolygonClick(event) {
+                                        var layer = event.target;
+                                        drawnItems.eachLayer(function(l) {
+                                            if (l === layer) {
+                                                // Iniciar modo de edição para o polígono clicado
+                                                map.editTools.startPolygonEdit(l);
+                                            } else {
+                                                // Finalizar qualquer outra edição em progresso
+                                                map.editTools.stopDrawing();
+                                            }
+                                        });
+                                    }
+                            
+                                    // var popup = L.popup();
+
+                                    // function onMapClick(e) {
+                                    //     popup
+                                    //         .setLatLng(e.latlng)
+                                    //         .setContent("You clicked the map at " + e.latlng.toString())
+                                    //         .openOn(map);
+                                    // }
+
+                                    // map.on('click', onMapClick);
+
+
+
+                                    // Função para limpar o localStorage e remover polígonos do mapa
+                                    function clearPolygons() {
+                                        localStorage.removeItem('polygons');
+                                        drawnItems.clearLayers();
+                                    }
+                                    // Carregar polígonos salvos ao iniciar a página
+                                    loadSavedPolygons();
+                                </script>
+
+                                <script>
+                                    // Definir coordenadas iniciais do marcador dentro do polígono
+                                    var initialPosition = L.latLng(-26.685795, -52.308896);
+
+                                    // Adicionar o marcador ao mapa
+                                    var movingMarker = L.marker(initialPosition).addTo(map);
+
+                                    // Array de coordenadas para simular o movimento
+                                    var moveCoordinates = [
+                                        L.latLng(-26.685795, -52.308896),
+                                        L.latLng(-26.687795, -52.309896),
+                                        L.latLng(-26.688795, -52.307896),
+                                        // Adicione mais coordenadas conforme necessário
+                                    ];
+
+                                    // Índice inicial no array de coordenadas
+                                    var currentIndex = 0;
+
+                                    // Função para atualizar a posição do marcador
+                                    function moveMarker() {
+                                        movingMarker.setLatLng(moveCoordinates[currentIndex]);
+                                        currentIndex++;
+                                        if (currentIndex >= moveCoordinates.length) {
+                                            currentIndex = 0; // Reiniciar o loop
+                                        }
+                                    }
+
+                                    // Definir intervalo para atualizar a posição do marcador (em milissegundos)
+                                    var interval = 2000; // 2 segundos
+
+                                    // Iniciar o movimento do marcador
+                                    var moveInterval = setInterval(moveMarker, interval);
+
+                                    // Parar o movimento quando a página for fechada
+                                    window.addEventListener('beforeunload', function() {
+                                        clearInterval(moveInterval);
+                                    });
+                                </script>
+
+                            </div>                
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h4>TABELA COM A LISTAGEM DOS ANIMAIS CADASTRADOS NO SISTEMA. COM A OPÇÃO DE DETALHES, EDITAR E EXCLUIR (NA LINHA)</h4> 
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Animais cadastrados
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                    <thead>
+                                        <tr>
+                                            <th>Código</th>
+                                            <th>Apelido</th>
+                                            <th>Idade</th>
+                                            <th>Data de entrada</th>
+                                            <th>Sensor</th>
+                                            <th>Status</th>
+                                            <th>Ação</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Código</th>
+                                            <th>Apelido</th>
+                                            <th>Idade</th>
+                                            <th>Data de entrada</th>
+                                            <th>Sensor</th>
+                                            <th>Status</th>
+                                            <th>Ação</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr>
+                                            <td>001</td>
+                                            <td>Vaca 1</td>
+                                            <td>4</td>
+                                            <td>2024/04/22</td>
+                                            <td>A123</td>
+                                            <td>Ativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>0025</td>
+                                            <td>Vaca 2</td>
+                                            <td>5</td>
+                                            <td>2024/03/15</td>
+                                            <td>B234</td>
+                                            <td>Ativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>0038</td>
+                                            <td>Vaca 3</td>
+                                            <td>3</td>
+                                            <td>2024/02/10</td>
+                                            <td>C345</td>
+                                            <td>Inativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>004</td>
+                                            <td>Vaca 4</td>
+                                            <td>6</td>
+                                            <td>2024/01/05</td>
+                                            <td>D456</td>
+                                            <td>Ativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>0014</td>
+                                            <td>Vaca 5</td>
+                                            <td>4</td>
+                                            <td>2024/04/22</td>
+                                            <td>A123</td>
+                                            <td>Ativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>002</td>
+                                            <td>Vaca 6</td>
+                                            <td>5</td>
+                                            <td>2024/03/15</td>
+                                            <td>B234</td>
+                                            <td>Ativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>003</td>
+                                            <td>Vaca 17</td>
+                                            <td>3</td>
+                                            <td>2024/02/10</td>
+                                            <td>C345</td>
+                                            <td>Inativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>004</td>
+                                            <td>Vaca 7</td>
+                                            <td>6</td>
+                                            <td>2024/01/05</td>
+                                            <td>D456</td>
+                                            <td>Ativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>005</td>
+                                            <td>Vaca 8</td>
+                                            <td>4</td>
+                                            <td>2024/04/22</td>
+                                            <td>A123</td>
+                                            <td>Ativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>006</td>
+                                            <td>Vaca 9</td>
+                                            <td>5</td>
+                                            <td>2024/03/15</td>
+                                            <td>B234</td>
+                                            <td>Ativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>007</td>
+                                            <td>Vaca 10</td>
+                                            <td>3</td>
+                                            <td>2024/02/10</td>
+                                            <td>C345</td>
+                                            <td>Inativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>008</td>
+                                            <td>Vaca 11</td>
+                                            <td>6</td>
+                                            <td>2024/01/05</td>
+                                            <td>D456</td>
+                                            <td>Ativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>009</td>
+                                            <td>Vaca 12</td>
+                                            <td>4</td>
+                                            <td>2024/04/22</td>
+                                            <td>A123</td>
+                                            <td>Ativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>010</td>
+                                            <td>Vaca 13</td>
+                                            <td>5</td>
+                                            <td>2024/03/15</td>
+                                            <td>B234</td>
+                                            <td>Ativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>011</td>
+                                            <td>Vaca 14</td>
+                                            <td>3</td>
+                                            <td>2024/02/10</td>
+                                            <td>C345</td>
+                                            <td>Inativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <tr>
+                                            <td>012</td>
+                                            <td>Vaca 15</td>
+                                            <td>6</td>
+                                            <td>2024/01/05</td>
+                                            <td>D456</td>
+                                            <td>Ativo</td>
+                                            <th>Editar | Excluir</th>
+                                        </tr>
+                                        <!-- Adicione mais linhas conforme necessário -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h4>Produção de leite por vaca</h4> 
+                            </div>
+                        </div>
+                    
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Produção de Leite
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple2" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Vaca</th>
+                                            <th>Produção (L)</th>
+                                            <th>Receita (R$)</th>
+                                            <th>Despesas (R$)</th>
+                                            <th>Lucro (R$)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBody">
+                                        <!-- Os dados serão preenchidos dinamicamente aqui -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                 
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+                    <script>
+                        $(document).ready(function() {
+                            // Dados de exemplo em formato JSON
+                            var producaoLeite = [
+                                { data: '03/01/2024', vaca: 'Vaca 1', producao: 30, receita: 1500, despesas: 500, lucro: 1000 },
+                                { data: '04/01/2024', vaca: 'Vaca 2', producao: 45, receita: 1700, despesas: 480, lucro: 960 },
+                                { data: '05/01/2024', vaca: 'Vaca 3', producao: 35, receita: 1520, despesas: 520, lucro: 1040 },
+                                { data: '07/01/2024', vaca: 'Vaca 2', producao: 22, receita: 1000, despesas: 600, lucro: 1000 },
+                                { data: '08/01/2024', vaca: 'Vaca 3', producao: 22, receita: 1000, despesas: 600, lucro: 1000 },
+                                { data: '09/01/2024', vaca: 'Vaca 1', producao: 22, receita: 1000, despesas: 600, lucro: 1000 },
+                                // Adicione mais objetos conforme necessário
+                            ];
+                
+                            // Preenchendo a tabela com os dados
+                            var tableBody = $('#tableBody');
+                            producaoLeite.forEach(function(dado) {
+                                var row = '<tr>' +
+                                    '<td>' + dado.data + '</td>' +
+                                    '<td>' + dado.vaca + '</td>' +
+                                    '<td>' + dado.producao + '</td>' +
+                                    '<td>' + dado.receita + '</td>' +
+                                    '<td>' + dado.despesas + '</td>' +
+                                    '<td>' + dado.lucro + '</td>' +
+                                '</tr>';
+                                tableBody.append(row);
+                            });
+                
+                            // Inicializando o DataTable
+                            $('#datatablesSimple2').DataTable();
+                        });
+                    </script>
+                        
+                        <div style="height: 100vh"></div>
+                        <div class="card mb-4"><div class="card-body">When scrolling, the navigation stays at the top of the page. This is the end of the static navigation demo.</div></div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; YellowStone 2024</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Termos &amp; Condições</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="js/datatables-simple-demo.js"></script>
+
+    </body>
+</html>

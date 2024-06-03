@@ -1,0 +1,148 @@
+{
+    "animais": [
+        {
+            "codigo": "001",
+            "apelido": "Vaca 1",
+            "idade": 4,
+            "dataEntrada": "2024-04-22",
+            "sensor": "A123",
+            "status": "Ativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "0025",
+            "apelido": "Vaca 2",
+            "idade": 5,
+            "dataEntrada": "2024-03-15",
+            "sensor": "B234",
+            "status": "Ativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "0038",
+            "apelido": "Vaca 3",
+            "idade": 3,
+            "dataEntrada": "2024-02-10",
+            "sensor": "C345",
+            "status": "Inativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "004",
+            "apelido": "Vaca 4",
+            "idade": 6,
+            "dataEntrada": "2024-01-05",
+            "sensor": "D456",
+            "status": "Ativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "0014",
+            "apelido": "Vaca 5",
+            "idade": 4,
+            "dataEntrada": "2024-04-22",
+            "sensor": "A123",
+            "status": "Ativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "002",
+            "apelido": "Vaca 6",
+            "idade": 5,
+            "dataEntrada": "2024-03-15",
+            "sensor": "B234",
+            "status": "Ativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "003",
+            "apelido": "Vaca 17",
+            "idade": 3,
+            "dataEntrada": "2024-02-10",
+            "sensor": "C345",
+            "status": "Inativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "004",
+            "apelido": "Vaca 7",
+            "idade": 6,
+            "dataEntrada": "2024-01-05",
+            "sensor": "D456",
+            "status": "Ativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "005",
+            "apelido": "Vaca 8",
+            "idade": 4,
+            "dataEntrada": "2024-04-22",
+            "sensor": "A123",
+            "status": "Ativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "006",
+            "apelido": "Vaca 9",
+            "idade": 5,
+            "dataEntrada": "2024-03-15",
+            "sensor": "B234",
+            "status": "Ativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "007",
+            "apelido": "Vaca 10",
+            "idade": 3,
+            "dataEntrada": "2024-02-10",
+            "sensor": "C345",
+            "status": "Inativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "008",
+            "apelido": "Vaca 11",
+            "idade": 6,
+            "dataEntrada": "2024-01-05",
+            "sensor": "D456",
+            "status": "Ativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "009",
+            "apelido": "Vaca 12",
+            "idade": 4,
+            "dataEntrada": "2024-04-22",
+            "sensor": "A123",
+            "status": "Ativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "010",
+            "apelido": "Vaca 13",
+            "idade": 5,
+            "dataEntrada": "2024-03-15",
+            "sensor": "B234",
+            "status": "Ativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "011",
+            "apelido": "Vaca 14",
+            "idade": 3,
+            "dataEntrada": "2024-02-10",
+            "sensor": "C345",
+            "status": "Inativo",
+            "acao": "Editar | Excluir"
+        },
+        {
+            "codigo": "012",
+            "apelido": "Vaca 15",
+            "idade": 6,
+            "dataEntrada": "2024-01-05",
+            "sensor": "D456",
+            "status": "Ativo",
+            "acao": "Editar | Excluir"
+        }
+    ]
+}
