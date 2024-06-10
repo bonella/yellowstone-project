@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -32,7 +32,7 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">YellowStone</a>
+            <a class="navbar-brand ps-3" href="index.html">YellowStone Agro</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -297,9 +297,11 @@
                                     // Definir coordenadas iniciais do marcador dentro do polígono
                                     var initialPosition = L.latLng(-26.685795, -52.308896);
 
+                                    
                                     // Adicionar o marcador ao mapa
                                     var movingMarker = L.marker(initialPosition).addTo(map);
-
+                                    movingMarker.bindPopup("Vaca 2");
+                                    
                                     // Array de coordenadas para simular o movimento
                                     var moveCoordinates = [
                                         L.latLng(-26.685795, -52.308896),
